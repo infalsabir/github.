@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="weather-app">
+        <div class="weather-header">
+            <h1 id="city">City</h1>
+            <p id="date-time">Date and Time</p>
+        </div>
+        <div class="weather-icon">
+            <img id="weather-icon" src="./8504201 (1).png" alt="Weather Icon">
+        </div>
+        <div class="temperature">
+            <h2 id="temperature">0°C</h2>
+            <p id="greeting">Greeting</p>
+        </div>
+        <div class="weather-details">
+            <div class="detail-item">
+                <p>Sunrise</p>
+                <p id="sunrise">0:00</p>
+            </div>
+            <div class="detail-item">
+                <p>Wind</p>
+                <p id="wind">0 m/s</p>
+            </div>
+            <div class="detail-item">
+                <p>Humidity</p>
+                <p id="humidity">0%</p>
+                
+                </div>
+            </div>
+        </div>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    const apiKey = '7c090b735cacb8eed3c8333938364ad6';
+    const city = 'Faisalabad';
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=faisalabad&appid=7c090b735cacb8eed3c8333938364ad6`)
+        .then(response => response.json())
+        .then(data => {
+            updateWeather(data);
+        })
+        .catch(error => {
+            console.error('Error fetching the weather data:', error);
+        });
+
+    function updateWeather(data) {
+        document.getElementById('city').textContent = data.name;
+        document.getElementById('date-time').textContent = new Date().toLocaleString();
+        const temperatureCelsius = (data.main.temp-273.15).toFixed(0);
+        document.getElementById('temperature').textContent = `${temperatureCelsius} °C`;
+        document.getElementById('greeting').textContent = getGreeting();
+
+        document.getElementById('sunrise').textContent = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+        document.getElementById('wind').textContent =` ${data.wind.speed} m/s`;
+        document.getElementById('humidity').textContent =` ${data.main.humidity} % `;
+    }
+
+    function getGreeting() {
+        const hour = new Date().getHours();
+        if (hour < 12) {
+            return 'GOOD MORNING Infal';
+        } else if (hour < 18) {
+            return 'GOOD AFTERNOON Infal';
+        } else {
+            return 'GOOD EVENING Infal';
+        }
+    }
+});
+    </script>
+</body>
+</html>
